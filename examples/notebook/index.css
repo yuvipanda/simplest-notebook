@@ -17,6 +17,11 @@ body {
   bottom: 4px;
 }
 
+#main-container {
+  position: relative;
+  height: 100vh;
+}
+
 .jp-NotebookPanel {
   border-bottom: 1px solid #e0e0e0;
 }

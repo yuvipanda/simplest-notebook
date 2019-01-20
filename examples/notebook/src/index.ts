@@ -3,6 +3,7 @@
 
 import 'es6-promise/auto'; // polyfill Promise on IE
 import '@jupyterlab/application/style/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '@jupyterlab/theme-light-extension/style/index.css';
 import '../index.css';
 
@@ -156,7 +157,7 @@ function createApp(manager: ServiceManager.IManager): void {
   panel.addWidget(nbWidget);
 
   // Attach the panel to the DOM.
-  Widget.attach(panel, document.body);
+  Widget.attach(panel, document.getElementById('main-container'));
   Widget.attach(completer, document.body);
 
   // Handle resize events.
