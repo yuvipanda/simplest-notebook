@@ -6,6 +6,37 @@ import { CmdIds } from '../commands';
 import '../../../styles/notebook.css';
 import { CommandRegistry } from '@phosphor/commands';
 import { Contents } from '@jupyterlab/services';
+import { ReactWidget, ToolbarButton } from '@jupyterlab/apputils';
+
+import { HTMLSelect } from '@jupyterlab/ui-components';
+
+class InterfaceSwitcher extends ReactWidget {
+  constructor(private commands: CommandRegistry) {
+    super();
+    this.addClass('jp-Notebook-toolbarCellType');
+  }
+  onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    let target = event.target.value;
+    if (target === '-') {
+      return;
+    }
+    this.commands.execute('switch:' + target);
+  };
+
+  render = () => {
+    return (
+      <HTMLSelect
+        minimal
+        onChange={this.onChange}
+        className="jp-Notebook-toolbarCellTypeDropdown"
+      >
+        <option value="-">Interface</option>
+        <option value="lab">JupyterLab</option>
+        <option value="classic">Classic</option>
+      </HTMLSelect>
+    );
+  };
+}
 
 export interface INotebookProps {
   notebookWidget: NotebookPanel;
@@ -50,7 +81,36 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
     window.addEventListener('resize', () => {
       panel.update();
     });
+
+    this.setupToolbarItems();
   }
+
+  setupToolbarItems = () => {
+    let downloadToolBarButton = new ToolbarButton({
+      onClick: () => {
+        this.props.commands.execute('notebook:download');
+      },
+      tooltip: 'Download notebook to your computer',
+      iconClassName: 'jp-MaterialIcon jp-DownloadIcon',
+      iconLabel: 'Download notebook'
+    });
+
+    this.props.notebookWidget.toolbar.insertItem(
+      // Just after the save button.
+      // FIXME: Determine dynamically once https://github.com/jupyterlab/jupyterlab/issues/5894 lands
+      1,
+      'download-notebook',
+      downloadToolBarButton
+    );
+
+    this.props.notebookWidget.toolbar.insertItem(
+      // Just before the kernel switcher
+      // FIXME: Determine dynamically once https://github.com/jupyterlab/jupyterlab/issues/5894 lands
+      11,
+      'switch-notebook',
+      new InterfaceSwitcher(this.props.commands)
+    );
+  };
 
   render() {
     let className = 'notebook-super-container ';
