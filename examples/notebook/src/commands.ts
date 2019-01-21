@@ -12,6 +12,7 @@ export const CmdIds = {
   restart: 'notebook:restart-kernel',
   switchKernel: 'notebook:switch-kernel',
   runAndAdvance: 'notebook-cells:run-and-advance',
+  restartAndRunAll: 'notebook:restart-and-run-all',
   deleteCell: 'notebook-cells:delete',
   selectAbove: 'notebook-cells:select-above',
   selectBelow: 'notebook-cells:select-below',

@@ -87,29 +87,43 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
   }
 
   setupToolbarItems = () => {
-    let downloadToolBarButton = new ToolbarButton({
-      onClick: () => {
-        this.props.commands.execute('notebook:download');
-      },
+    const toolbar = this.props.notebookWidget.toolbar;
+    const downloadToolBarButton = new ToolbarButton({
+      onClick: () => this.props.commands.execute(CmdIds.download),
       tooltip: 'Download notebook to your computer',
       iconClassName: 'jp-MaterialIcon jp-DownloadIcon',
       iconLabel: 'Download notebook'
     });
+    const restartAndRunAll = new ToolbarButton({
+      // FIXME: Make an icon for this
+      label: 'RR',
+      tooltip: 'Restart Kernel & Run All Cells',
+      onClick: () => this.props.commands.execute(CmdIds.restartAndRunAll)
+    });
 
-    this.props.notebookWidget.toolbar.insertItem(
+    // We insert toolbar items right to left.
+    // This way, we can calculate indexes by counting in the default jupyterlab toolbar,
+    // and our own toolbar items won't affect our insertion order.j
+    // FIXME: Determine dynamically once https://github.com/jupyterlab/jupyterlab/issues/5894 lands
+    toolbar.insertItem(
+      // Just before the kernel switcher
+      10,
+      'switch-notebook',
+      new InterfaceSwitcher(this.props.commands)
+    );
+    toolbar.insertItem(
+      // Just after restart kernel
+      8,
+      'restartAndRunAll',
+      restartAndRunAll
+    );
+
+    toolbar.insertItem(
       // Just after the save button.
       // FIXME: Determine dynamically once https://github.com/jupyterlab/jupyterlab/issues/5894 lands
       1,
       'download-notebook',
       downloadToolBarButton
-    );
-
-    this.props.notebookWidget.toolbar.insertItem(
-      // Just before the kernel switcher
-      // FIXME: Determine dynamically once https://github.com/jupyterlab/jupyterlab/issues/5894 lands
-      11,
-      'switch-notebook',
-      new InterfaceSwitcher(this.props.commands)
     );
   };
 
@@ -170,6 +184,14 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
           nbWidget.content,
           nbWidget.context.session
         );
+      }
+    });
+    commands.addCommand(CmdIds.restartAndRunAll, {
+      label: 'Restart Kernel & Run All Cells',
+      execute: () => {
+        nbWidget.context.session.restart().then(() => {
+          NotebookActions.runAll(nbWidget.content, nbWidget.context.session);
+        });
       }
     });
     commands.addCommand(CmdIds.editMode, {
@@ -296,6 +318,7 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
       { keys: ['Shift J'], command: CmdIds.extendBelow },
       { keys: ['A'], command: CmdIds.insertAbove },
       { keys: ['B'], command: CmdIds.insertBelow },
+      { keys: ['R', 'R'], command: CmdIds.restartAndRunAll },
       // Cell movement shortcuts
       { keys: ['J'], command: CmdIds.selectBelow },
       { keys: ['ArrowDown'], command: CmdIds.selectBelow },
