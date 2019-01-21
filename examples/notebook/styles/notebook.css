@@ -14,6 +14,7 @@ FIXME: This should live next to the TSX file
 .notebook-super-container {
   position: relative;
   height: 100vh;
+  box-shadow: var(--jp-elevation-z4);
 }
 
 .jp-NotebookPanel {

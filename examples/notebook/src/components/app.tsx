@@ -6,6 +6,7 @@ import { CommandRegistry } from '@phosphor/commands';
 import { CommandPalette, Widget } from '@phosphor/widgets';
 
 import { ServiceManager } from '@jupyterlab/services';
+import { PathExt } from '@jupyterlab/coreutils';
 
 import {
   NotebookPanel,
@@ -22,14 +23,14 @@ import { DocumentManager } from '@jupyterlab/docmanager';
 import { DocumentRegistry } from '@jupyterlab/docregistry';
 
 import { RenderMimeRegistry } from '@jupyterlab/rendermime';
-import { NavBar } from './header';
+import { Header } from './header';
 import { Notebook } from './notebook';
 import { CompleterComponent } from './completer';
 
 import * as React from 'react';
 
 interface AppState {
-  notebookName: string;
+  notebookPath: string;
 }
 
 interface AppProps {
@@ -96,20 +97,26 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.nbWidget = docManager.open(this.props.notebookPath) as NotebookPanel;
 
-    this.state = { notebookName: this.props.notebookPath };
+    this.state = { notebookPath: this.props.notebookPath };
 
     this.nbWidget.model.stateChanged.connect(this.onNotebookStateChanged);
   }
 
   onNotebookStateChanged = () => {
     this.setState({
-      notebookName: this.nbWidget.context.path
+      notebookPath: this.nbWidget.context.path
     });
   };
 
   render() {
+    // FIXME: Better way of getting rid of extension?
+    const notebookName = PathExt.basename(this.state.notebookPath).replace(
+      '.ipynb',
+      ''
+    );
+
     return [
-      <NavBar key="navbar" notebookName={this.state.notebookName} />,
+      <Header key="header" title={notebookName} />,
       <Notebook
         key="notebook"
         id="main-container"

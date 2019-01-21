@@ -1,0 +1,19 @@
+/* Center the notebook document & limit how wide it can be */
+#everything-container {
+  margin: 0px auto;
+  padding: 0px 24px;
+  max-width: 1080px;
+}
+
+body {
+  background-color: var(--jp-layout-color0);
+}
+
+:root {
+  /* We consisently stick to Roboto if possible */
+  --jp-code-font-family: 'Roboto Mono', monospace;
+  --jp-content-font-family: 'Roboto', sans-serif;
+  --jp-ui-font-family: var(--jp-content-font-family);
+  --jp-cell-prompt-font-family: var(--jp-code-font-family);
+  --sn-title-font-family: 'Roboto Slab', serif;
+}

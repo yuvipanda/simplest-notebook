@@ -1,17 +1,14 @@
+import '../../../styles/header.css';
 import * as React from 'react';
 
-export interface INavbarProps {
-  notebookName: string;
+export interface HeaderProps {
+  title: string;
 }
 
-export const NavBar = (props: INavbarProps) => {
+export const Header = (props: HeaderProps) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
-        <a className="navbar-brand" href="#">
-          {props.notebookName}
-        </a>
-      </div>
-    </nav>
+    <header>
+      <a className="sn-header-title">{props.title}</a>
+    </header>
   );
 };
