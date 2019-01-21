@@ -1,13 +1,13 @@
 module.exports = {
-  entry: ['whatwg-fetch', './build/index.js'],
+  entry: ['whatwg-fetch', './simplest_notebook/build/index.js'],
   output: {
-    path: __dirname + '/build',
+    path: __dirname + '/simplest_notebook/build',
     filename: 'bundle.js',
-    publicPath: './example/'
+    publicPath: ''
   },
   bail: true,
   devtool: 'cheap-source-map',
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
