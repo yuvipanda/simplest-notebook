@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfigbase",
   "compilerOptions": {
-    "outDir": "../build"
+    "outDir": "../simplest_notebook/build"
   },
   "include": ["*", "components/*"]
 }

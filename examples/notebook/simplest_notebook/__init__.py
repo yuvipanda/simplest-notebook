@@ -51,22 +51,16 @@ class NotebookHandler(IPythonHandler):
         loader = FileSystemLoader(HERE)
         return loader.load(self.settings['jinja2_env'], name)
 
+def _jupyter_server_extension_paths():
+    return [{
+        'module': 'simplest_notebook',
+    }]
 
-class ExampleApp(NotebookApp):
-
-    default_url = Unicode('/notebook/test.ipynb')
-
-    def init_webapp(self):
-        """initialize tornado webapp and httpserver.
-        """
-        super(ExampleApp, self).init_webapp()
-        default_handlers = [
-            (ujoin(self.base_url, r'notebook/(.*)?'), NotebookHandler),
-            (ujoin(self.base_url, r"build/(.*)"), FileFindHandler,
-                {'path': os.path.join(HERE, 'build')})
-        ]
-        self.web_app.add_handlers('.*$', default_handlers)
-
-
-if __name__ == '__main__':
-    ExampleApp.launch_instance()
+def load_jupyter_server_extension(nbapp):
+    base_url = ujoin(nbapp.web_app.settings['base_url'], 'simplest')
+    handlers = [
+        (ujoin(base_url, r'notebook/(.*)?'), NotebookHandler),
+        (ujoin(base_url, r"build/(.*)"), FileFindHandler,
+            {'path': os.path.join(HERE, 'build')})
+    ]
+    nbapp.web_app.add_handlers('.*$', handlers)

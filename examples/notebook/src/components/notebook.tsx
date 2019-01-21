@@ -3,7 +3,7 @@ import { SplitPanel, Widget, CommandPalette } from '@phosphor/widgets';
 import { NotebookPanel, NotebookActions } from '@jupyterlab/notebook';
 import { CmdIds } from '../commands';
 
-import '../../notebook.css';
+import '../../../styles/notebook.css';
 import { CommandRegistry } from '@phosphor/commands';
 
 export interface INotebookProps {

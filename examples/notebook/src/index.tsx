@@ -5,7 +5,7 @@ import 'es6-promise/auto'; // polyfill Promise on IE
 import '@jupyterlab/application/style/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@jupyterlab/theme-light-extension/style/index.css';
-import '../index.css';
+import '../../styles/index.css';
 
 import { ServiceManager } from '@jupyterlab/services';
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
