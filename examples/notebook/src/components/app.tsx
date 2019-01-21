@@ -6,7 +6,7 @@ import { CommandRegistry } from '@phosphor/commands';
 import { CommandPalette, Widget } from '@phosphor/widgets';
 
 import { ServiceManager } from '@jupyterlab/services';
-import { PathExt } from '@jupyterlab/coreutils';
+import { PathExt, PageConfig } from '@jupyterlab/coreutils';
 
 import {
   NotebookPanel,
@@ -28,6 +28,9 @@ import { Notebook } from './notebook';
 import { CompleterComponent } from './completer';
 
 import * as React from 'react';
+// FIXME: Only import parts of bootstrap we need
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface AppState {
   notebookPath: string;
@@ -97,7 +100,11 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.nbWidget = docManager.open(this.props.notebookPath) as NotebookPanel;
 
-    this.state = { notebookPath: this.props.notebookPath };
+    this.state = {
+      notebookPath: this.props.notebookPath
+    };
+
+    this.addCommands();
 
     this.nbWidget.model.stateChanged.connect(this.onNotebookStateChanged);
   }
@@ -108,6 +115,40 @@ export class App extends React.Component<AppProps, AppState> {
     });
   };
 
+  addCommands = () => {
+    let commands = this.commands;
+
+    const contentsManager = this.props.serviceManager.contents;
+
+    commands.addCommand('notebook:download', {
+      label: 'Download Notebook',
+      execute: () => {
+        contentsManager.getDownloadUrl(this.props.notebookPath).then(url => {
+          window.open(url, '_blank');
+        });
+      }
+    });
+    commands.addCommand('switch:lab', {
+      label: 'Open in JupyterLab',
+      execute: () => {
+        const labUrl =
+          PageConfig.getBaseUrl() + 'lab/tree/' + this.props.notebookPath;
+        window.location.href = labUrl;
+      }
+    });
+    commands.addCommand('switch:classic', {
+      label: 'Open in Classic Jupyter',
+      execute: () => {
+        const classicUrl =
+          PageConfig.getBaseUrl() + 'tree/' + this.props.notebookPath;
+        window.location.href = classicUrl;
+      }
+    });
+    return commands;
+  };
+
+  commandOrder = ['notebook:download', '-', 'switch:lab', 'switch:classic'];
+
   render() {
     // FIXME: Better way of getting rid of extension?
     const notebookName = PathExt.basename(this.state.notebookPath).replace(
@@ -116,7 +157,12 @@ export class App extends React.Component<AppProps, AppState> {
     );
 
     return [
-      <Header key="header" title={notebookName} />,
+      <Header
+        key="header"
+        title={notebookName}
+        commandRegistry={this.commands}
+        commandsOrganization={this.commandOrder}
+      />,
       <Notebook
         key="notebook"
         id="main-container"
