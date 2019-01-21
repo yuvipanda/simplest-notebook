@@ -63,6 +63,7 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
 
     this.palette = new CommandPalette({ commands: this.props.commands });
     this.addCommands();
+    this.addShortcuts();
   }
 
   componentDidMount() {
@@ -199,9 +200,13 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
       label: 'Extend Below',
       execute: () => NotebookActions.extendSelectionBelow(nbWidget.content)
     });
-    commands.addCommand(CmdIds.merge, {
-      label: 'Merge Cells',
-      execute: () => NotebookActions.mergeCells(nbWidget.content)
+    commands.addCommand(CmdIds.insertAbove, {
+      label: 'Insert Above',
+      execute: () => NotebookActions.insertAbove(nbWidget.content)
+    });
+    commands.addCommand(CmdIds.insertBelow, {
+      label: 'Insert Below',
+      execute: () => NotebookActions.insertBelow(nbWidget.content)
     });
     commands.addCommand(CmdIds.split, {
       label: 'Split Cell',
@@ -244,102 +249,68 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
       CmdIds.selectBelow,
       CmdIds.extendAbove,
       CmdIds.extendBelow,
+      CmdIds.insertAbove,
+      CmdIds.insertBelow,
       CmdIds.undo,
       CmdIds.redo
     ].forEach(command => palette.addItem({ command, category }));
+  };
 
+  addShortcuts = () => {
+    const completerActive = '.jp-mod-completer-active';
+    const editModeWithCompleter =
+      '.jp-Notebook.jp-mod-editMode .jp-mod-completer-enabled';
+    const all = '.jp-Notebook';
+    const commandMode = '.jp-Notebook.jp-mod-commandMode:focus';
+    const editMode = '.jp-Notebook.jp-mod-editMode';
     let bindings = [
+      // Tab / code completor shortcuts
       {
-        selector: '.jp-Notebook.jp-mod-editMode .jp-mod-completer-enabled',
+        selector: editModeWithCompleter,
         keys: ['Tab'],
         command: CmdIds.invokeNotebook
       },
       {
-        selector: `.jp-mod-completer-active`,
+        selector: completerActive,
         keys: ['Enter'],
         command: CmdIds.selectNotebook
       },
-      {
-        selector: '.jp-Notebook',
-        keys: ['Shift Enter'],
-        command: CmdIds.runAndAdvance
-      },
-      {
-        selector: '.jp-Notebook',
-        keys: ['Accel S'],
-        command: CmdIds.save
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['I', 'I'],
-        command: CmdIds.interrupt
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['0', '0'],
-        command: CmdIds.restart
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['Enter'],
-        command: CmdIds.editMode
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-editMode',
-        keys: ['Escape'],
-        command: CmdIds.commandMode
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['Shift M'],
-        command: CmdIds.merge
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-editMode',
-        keys: ['Ctrl Shift -'],
-        command: CmdIds.split
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['J'],
-        command: CmdIds.selectBelow
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['ArrowDown'],
-        command: CmdIds.selectBelow
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['K'],
-        command: CmdIds.selectAbove
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['ArrowUp'],
-        command: CmdIds.selectAbove
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['Shift K'],
-        command: CmdIds.extendAbove
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['Shift J'],
-        command: CmdIds.extendBelow
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['Z'],
-        command: CmdIds.undo
-      },
-      {
-        selector: '.jp-Notebook.jp-mod-commandMode:focus',
-        keys: ['Y'],
-        command: CmdIds.redo
-      }
+      // General shortcut available at all times
+      { selector: all, keys: ['Shift Enter'], command: CmdIds.runAndAdvance },
+      { selector: all, keys: ['Accel S'], command: CmdIds.save }
     ];
-    bindings.map(binding => commands.addKeyBinding(binding));
+    const editModeShortcuts = [
+      // Shortcuts available in edit mode
+      { keys: ['Ctrl Shift -'], command: CmdIds.split },
+      { keys: ['Escape'], command: CmdIds.commandMode }
+    ];
+
+    const commandModeShortcuts = [
+      // Kernel related shortcuts
+      { keys: ['I', 'I'], command: CmdIds.interrupt },
+      { keys: ['0', '0'], command: CmdIds.restart },
+      // Cell operation shortcuts
+      { keys: ['Enter'], command: CmdIds.editMode },
+      { keys: ['Shift M'], command: CmdIds.merge },
+      { keys: ['Shift K'], command: CmdIds.extendAbove },
+      { keys: ['Shift J'], command: CmdIds.extendBelow },
+      { keys: ['A'], command: CmdIds.insertAbove },
+      { keys: ['B'], command: CmdIds.insertBelow },
+      // Cell movement shortcuts
+      { keys: ['J'], command: CmdIds.selectBelow },
+      { keys: ['ArrowDown'], command: CmdIds.selectBelow },
+      { keys: ['K'], command: CmdIds.selectAbove },
+      { keys: ['ArrowUp'], command: CmdIds.selectAbove },
+      // Other shortcuts
+      { keys: ['Z'], command: CmdIds.undo },
+      { keys: ['Y'], command: CmdIds.redo }
+    ];
+    commandModeShortcuts.map(binding =>
+      this.props.commands.addKeyBinding({ selector: commandMode, ...binding })
+    );
+    editModeShortcuts.map(binding =>
+      this.props.commands.addKeyBinding({ selector: editMode, ...binding })
+    );
+    bindings.map(binding => this.props.commands.addKeyBinding(binding));
   };
 }

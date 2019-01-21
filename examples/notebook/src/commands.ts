@@ -17,6 +17,8 @@ export const CmdIds = {
   selectBelow: 'notebook-cells:select-below',
   extendAbove: 'notebook-cells:extend-above',
   extendBelow: 'notebook-cells:extend-below',
+  insertAbove: 'notebook-cells:insert-above',
+  insertBelow: 'notebook-cells:insert-below',
   editMode: 'notebook:edit-mode',
   merge: 'notebook-cells:merge',
   split: 'notebook-cells:split',
