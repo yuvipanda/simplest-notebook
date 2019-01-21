@@ -3,7 +3,7 @@ from glob import glob
 
 setuptools.setup(
     name="simplest-notebook",
-    version='0.0.1',
+    version='0.0.2',
     url="https://github.com/yuvipanda/simplest-notebook",
     author="Yuvi Panda",
     author_email="yuvipanda@gmail.com",
