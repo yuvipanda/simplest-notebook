@@ -61,7 +61,7 @@ def _jupyter_server_extension_paths():
 def load_jupyter_server_extension(nbapp):
     base_url = ujoin(nbapp.web_app.settings['base_url'], 'simplest')
     handlers = [
-        (ujoin(base_url, r'notebook/(.*)?'), NotebookHandler),
+        (ujoin(base_url, r'notebooks/(.*)?'), NotebookHandler),
         (ujoin(base_url, r"build/(.*)"), FileFindHandler,
             {'path': os.path.join(HERE, 'build')})
     ]
