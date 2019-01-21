@@ -27,6 +27,7 @@ class NotebookHandler(IPythonHandler):
 
     def get(self, notebook_path):
         """Get the main page for the application's interface."""
+        page_title = os.path.basename(notebook_path).replace(".ipynb", "")
         # Options set here can be read with PageConfig.getOption
         config_data = {
             # Use camelCase here, since that's what the lab components expect
@@ -43,6 +44,7 @@ class NotebookHandler(IPythonHandler):
                 'index.html',
                 static=self.static_url,
                 base_url=self.base_url,
+                page_title=page_title,
                 config_data=config_data
             )
         )
