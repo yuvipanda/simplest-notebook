@@ -7,6 +7,7 @@ export const CmdIds = {
   invokeNotebook: 'completer:invoke-notebook',
   selectNotebook: 'completer:select-notebook',
   save: 'notebook:save',
+  download: 'notebook:download',
   interrupt: 'notebook:interrupt-kernel',
   restart: 'notebook:restart-kernel',
   switchKernel: 'notebook:switch-kernel',

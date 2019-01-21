@@ -118,16 +118,6 @@ export class App extends React.Component<AppProps, AppState> {
   addCommands = () => {
     let commands = this.commands;
 
-    const contentsManager = this.props.serviceManager.contents;
-
-    commands.addCommand('notebook:download', {
-      label: 'Download Notebook',
-      execute: () => {
-        contentsManager.getDownloadUrl(this.props.notebookPath).then(url => {
-          window.open(url, '_blank');
-        });
-      }
-    });
     commands.addCommand('switch:lab', {
       label: 'Open in JupyterLab',
       execute: () => {
@@ -169,6 +159,8 @@ export class App extends React.Component<AppProps, AppState> {
         className="container"
         commands={this.commands}
         notebookWidget={this.nbWidget}
+        notebookPath={this.state.notebookPath}
+        contentsManager={this.props.serviceManager.contents}
       />,
       <CompleterComponent
         key="completer"

@@ -5,12 +5,15 @@ import { CmdIds } from '../commands';
 
 import '../../../styles/notebook.css';
 import { CommandRegistry } from '@phosphor/commands';
+import { Contents } from '@jupyterlab/services';
 
 export interface INotebookProps {
   notebookWidget: NotebookPanel;
   commands: CommandRegistry;
+  notebookPath: string;
   id: string;
   className: string;
+  contentsManager: Contents.IManager;
 }
 
 interface INotebookState {
@@ -147,6 +150,16 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
     commands.addCommand(CmdIds.redo, {
       label: 'Redo',
       execute: () => NotebookActions.redo(nbWidget.content)
+    });
+    commands.addCommand('notebook:download', {
+      label: 'Download Notebook',
+      execute: () => {
+        this.props.contentsManager
+          .getDownloadUrl(this.props.notebookPath)
+          .then(url => {
+            window.open(url, '_blank');
+          });
+      }
     });
 
     let category = 'Notebook Operations';
