@@ -12,7 +12,7 @@ export interface INotebookProps {
   commands: CommandRegistry;
   notebookPath: string;
   id: string;
-  className: string;
+  className?: string;
   contentsManager: Contents.IManager;
 }
 
@@ -53,7 +53,10 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
   }
 
   render() {
-    const className = 'notebook-super-container ' + this.props.className;
+    let className = 'notebook-super-container ';
+    if (this.props.className !== undefined) {
+      className += this.props.className;
+    }
     return <div className={className} id={this.props.id} />;
   }
 
@@ -61,6 +64,7 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
     const commands = this.props.commands;
     const nbWidget = this.props.notebookWidget;
     const palette = this.palette;
+
     // Add commands.
     commands.addCommand(CmdIds.invokeNotebook, {
       label: 'Invoke Notebook',

@@ -28,9 +28,6 @@ import { Notebook } from './notebook';
 import { CompleterComponent } from './completer';
 
 import * as React from 'react';
-// FIXME: Only import parts of bootstrap we need
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface AppState {
   notebookPath: string;
@@ -156,7 +153,6 @@ export class App extends React.Component<AppProps, AppState> {
       <Notebook
         key="notebook"
         id="main-container"
-        className="container"
         commands={this.commands}
         notebookWidget={this.nbWidget}
         notebookPath={this.state.notebookPath}
