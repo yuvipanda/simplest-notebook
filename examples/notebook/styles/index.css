@@ -17,3 +17,7 @@ body {
   --jp-cell-prompt-font-family: var(--jp-code-font-family);
   --sn-title-font-family: 'Roboto Slab', serif;
 }
+
+.sn-RestartAndRunAllIcon {
+  background-image: url('./restart-runall.svg');
+}

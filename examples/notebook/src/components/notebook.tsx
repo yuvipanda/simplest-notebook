@@ -95,8 +95,8 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
       iconLabel: 'Download notebook'
     });
     const restartAndRunAll = new ToolbarButton({
-      // FIXME: Make an icon for this
-      label: 'RR',
+      iconClassName: 'jp-MaterialIcon sn-RestartAndRunAllIcon',
+      iconLabel: 'Restart Kernel & Run All Cells',
       tooltip: 'Restart Kernel & Run All Cells',
       onClick: () => this.props.commands.execute(CmdIds.restartAndRunAll)
     });
