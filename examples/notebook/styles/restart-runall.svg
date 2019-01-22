@@ -1,0 +1,20 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.79 45.79">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #616261;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .cls-2 {
+        fill: #616261;
+      }
+    </style>
+  </defs>
+  <title>restart-runall</title>
+  <path class="cls-1" d="M41.59,23.25A18.53,18.53,0,1,1,36.81,10.8a18.75,18.75,0,0,1,2.18,3"/>
+  <polygon class="cls-2" points="33.36 23.25 17.51 14.1 17.51 32.4 33.36 23.25"/>
+  <polygon class="cls-2" points="43.05 16.92 42.16 6.32 32.46 16.02 43.05 16.92"/>
+</svg>
