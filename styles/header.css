@@ -1,0 +1,15 @@
+header.sn-header {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  display: flex;
+}
+
+header .sn-header-title {
+  font-family: var(--sn-title-font-family);
+  font-size: 1.5em;
+
+}
+
+header .sn-more-menu-button {
+  color: var(--jp-content-font-color2);
+}
