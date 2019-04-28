@@ -1,7 +1,21 @@
 {
-  "extends": "../../../tsconfigbase",
   "compilerOptions": {
-    "outDir": "../simplest_notebook/build"
+    "outDir": "../simplest_notebook/build",
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "preserveWatchOutput": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "es2015",
+    "lib": ["dom", "es2015"],
+    "jsx": "react",
+    "types": []
   },
   "include": ["*", "components/*"]
 }

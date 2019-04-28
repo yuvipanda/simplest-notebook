@@ -4,7 +4,6 @@
 import 'es6-promise/auto'; // polyfill Promise on IE
 import '@jupyterlab/application/style/index.css';
 import '@jupyterlab/theme-light-extension/style/index.css';
-import '../../styles/index.css';
 
 import { ServiceManager } from '@jupyterlab/services';
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
@@ -16,6 +15,8 @@ import {
 import { PageConfig } from '@jupyterlab/coreutils';
 
 import { App } from './components/app';
+// Our custom styles
+import '../../styles/index.css';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
