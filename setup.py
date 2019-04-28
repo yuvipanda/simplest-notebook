@@ -14,10 +14,12 @@ def build_static_first(cls):
     """
     class Command(cls):
         def run(self):
-            command = [
-                "npm", "run", "build"
+            commands = [
+                ["npm", "install"],
+                ["npm", "run", "build"]
             ]
-            subprocess.check_call(command, cwd=HERE)
+            for command in commands:
+                subprocess.check_call(command, cwd=HERE)
             super().run()
 
     return Command
