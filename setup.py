@@ -27,7 +27,7 @@ def build_static_first(cls):
 
 setuptools.setup(
     name="simplest-notebook",
-    version='0.0.6',
+    version='0.0.7',
     url="https://github.com/yuvipanda/simplest-notebook",
     author="Yuvi Panda",
     author_email="yuvipanda@gmail.com",

@@ -1,6 +1,6 @@
 {
   "name": "simplest-notebook",
-  "version": "0.1.0",
+  "version": "0.0.7",
   "private": true,
   "scripts": {
     "build": "tsc -p src && webpack",
