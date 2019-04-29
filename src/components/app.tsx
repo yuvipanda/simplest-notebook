@@ -4,6 +4,7 @@
 import { ServiceManager } from '@jupyterlab/services';
 import { RenderMimeRegistry } from '@jupyterlab/rendermime';
 import { NotebookPage } from '../pages/notebook';
+import { FileBrowserPage } from '../pages/filebrowser';
 
 import * as React from 'react';
 
@@ -15,13 +16,22 @@ export interface AppProps {
 }
 
 const App = (props: AppProps) => {
-  return (
-    <NotebookPage
-      notebookPath={props.path}
-      serviceManager={props.serviceManager}
-      rendermime={props.renderMime}
-    />
-  );
+  if (props.kind == "notebooks") {
+    return (
+      <NotebookPage
+        notebookPath={props.path}
+        serviceManager={props.serviceManager}
+        rendermime={props.renderMime}
+      />
+    );
+  } else {
+    return (
+      <FileBrowserPage
+        startingPath={props.path}
+        serviceManager={props.serviceManager}
+      />
+    );
+  }
 };
 
 export { App };

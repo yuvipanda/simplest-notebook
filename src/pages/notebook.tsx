@@ -147,8 +147,6 @@ export class NotebookPage extends React.Component<NotebookPageProps, NotebookPag
       <Header
         key="header"
         title={notebookName}
-        commandRegistry={this.commands}
-        commandsOrganization={this.commandOrder}
       />,
       <Notebook
         key="notebook"

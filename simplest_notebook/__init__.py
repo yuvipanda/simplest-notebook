@@ -24,15 +24,15 @@ class PageHandler(IPythonHandler):
     """
     Serve a notebook file from the filesystem in the notebook interface
     """
-    def get(self, kind, notebook_path):
+    def get(self, kind, path):
         """Get the main page for the application's interface."""
-        page_title = os.path.basename(notebook_path).replace(".ipynb", "")
+        page_title = os.path.basename(path).replace(".ipynb", "")
         # Options set here can be read with PageConfig.getOption
         config_data = {
             # Use camelCase here, since that's what the lab components expect
             'baseUrl': self.base_url,
             'token': self.settings['token'],
-            'notebookPath': notebook_path,
+            'path': path,
             'bundleUrl': ujoin(self.base_url, 'build/'),
             # FIXME: Don't use a CDN here
             'mathjaxUrl': "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
@@ -58,10 +58,11 @@ def _jupyter_server_extension_paths():
         'module': 'simplest_notebook',
     }]
 
+
 def load_jupyter_server_extension(nbapp):
     base_url = ujoin(nbapp.web_app.settings['base_url'], 'simplest')
     handlers = [
-        (ujoin(base_url, r'notebooks/(.*)?'), PageHandler),
+        (ujoin(base_url, r'(notebooks|tree)(.*)?'), PageHandler),
         (ujoin(base_url, r"build/(.*)"), FileFindHandler,
             {'path': os.path.join(HERE, 'build')})
     ]
@@ -70,7 +71,7 @@ def load_jupyter_server_extension(nbapp):
 
 class SimplestNotebookApp(NotebookApp):
     default_url = Unicode(
-        '/simplest',
+        '/simplest/tree',
         config=True,
         help="""
         Default URL to redirect to from /

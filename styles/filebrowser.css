@@ -1,0 +1,22 @@
+/**
+Styles for Notebook.
+
+FIXME: This should live next to the TSX file
+*/
+.filebrowser-container {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+}
+
+.filebrowser-super-container {
+  position: relative;
+  height: 100vh;
+  box-shadow: var(--jp-elevation-z4);
+}
+
+.jp-NotebookPanel {
+  border-bottom: 1px solid #e0e0e0;
+}

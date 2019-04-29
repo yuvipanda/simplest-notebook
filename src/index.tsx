@@ -28,7 +28,7 @@ function main(): void {
 
   manager.ready.then(() => {
     let kind = PageConfig.getOption('kind') as KindType;
-    let notebookPath = PageConfig.getOption('notebookPath');
+    let path = PageConfig.getOption('path');
     const rendermime = new RenderMimeRegistry({
       initialFactories: initialFactories,
       latexTypesetter: new MathJaxTypesetter({
@@ -40,7 +40,7 @@ function main(): void {
     ReactDOM.render(
       <App
         kind={kind}
-        path={notebookPath}
+        path={path}
         serviceManager={manager}
         renderMime={rendermime}
       />,
