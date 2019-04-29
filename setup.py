@@ -1,6 +1,7 @@
 import setuptools
 from distutils.command.build import build
 from distutils.command.sdist import sdist
+from distutils.command.bdist import bdist
 from setuptools.command.develop import develop
 from glob import glob
 import subprocess
@@ -27,7 +28,7 @@ def build_static_first(cls):
 
 setuptools.setup(
     name="simplest-notebook",
-    version='0.0.7',
+    version='0.0.8',
     url="https://github.com/yuvipanda/simplest-notebook",
     author="Yuvi Panda",
     author_email="yuvipanda@gmail.com",
@@ -46,7 +47,9 @@ setuptools.setup(
     },
     zip_safe=False,
     cmdclass={
+        # This doesn't actually when installing sdist
         "sdist": build_static_first(sdist),
+        "bdist": build_static_first(bdist),
         "build": build_static_first(build),
         "develop": build_static_first(develop),
     },
