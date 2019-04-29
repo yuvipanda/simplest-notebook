@@ -49,5 +49,10 @@ setuptools.setup(
         "sdist": build_static_first(sdist),
         "build": build_static_first(build),
         "develop": build_static_first(develop),
+    },
+    entry_points={
+        'console_scripts': [
+            'jupyter-simplest-notebook = simplest_notebook:main'
+        ]
     }
 )

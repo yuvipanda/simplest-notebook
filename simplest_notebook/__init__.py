@@ -66,3 +66,20 @@ def load_jupyter_server_extension(nbapp):
             {'path': os.path.join(HERE, 'build')})
     ]
     nbapp.web_app.add_handlers('.*$', handlers)
+
+
+class SimplestNotebookApp(NotebookApp):
+    default_url = Unicode(
+        '/simplest',
+        config=True,
+        help="""
+        Default URL to redirect to from /
+        """
+    )
+    def init_server_extensions(self):
+        super().init_server_extensions()
+        if not self.nbserver_extensions.get('simplest_notebook', False):
+            self.log.warn(msg)
+            load_jupyter_server_extension(self)
+
+main = SimplestNotebookApp.launch_instance
