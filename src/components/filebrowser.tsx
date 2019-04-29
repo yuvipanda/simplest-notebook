@@ -40,9 +40,10 @@ export class FileBrowserComponent extends React.Component<IFileBrowserProps, INo
   }
 
   render() {
-    return (
-      <div className="filebrowser-super-container" id={this.props.id} />
-    );
+    return ([
+      <p><strong>Note:</strong> For now, right click and select Open to open notebooks and files</p>,
+      <div className="filebrowser-super-container" id={this.props.id} />,
+    ]);
   }
 
   componentDidMount() {
