@@ -25,6 +25,7 @@ class PageHandler(IPythonHandler):
     """
     Serve a notebook file from the filesystem in the notebook interface
     """
+    @web.authenticated
     def get(self, kind, path):
         """Get the main page for the application's interface."""
         page_title = os.path.basename(path).replace(".ipynb", "")
