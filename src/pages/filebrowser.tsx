@@ -78,6 +78,12 @@ export class FileBrowserPage extends React.Component<FileBrowserPageProps, FileB
     this.setState({
       currentPath: changeProps.newValue
     });
+
+    // Modify our URL so users can copy paste URLs
+    const dirUrl = PageConfig.getBaseUrl() + 'simplest/tree/' + changeProps.newValue;
+    history.pushState(
+      null, '', dirUrl
+    );
   }
 
   openItem = (item: Contents.IModel) => {
