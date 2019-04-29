@@ -17,6 +17,7 @@ from notebook.base.handlers import IPythonHandler, FileFindHandler
 from notebook.notebookapp import NotebookApp
 from notebook.utils import url_path_join as ujoin
 from traitlets import Unicode
+from tornado import web
 
 HERE = os.path.dirname(__file__)
 
@@ -53,6 +54,14 @@ class PageHandler(IPythonHandler):
         loader = FileSystemLoader(HERE)
         return loader.load(self.settings['jinja2_env'], name)
 
+
+class RedirectHandler(IPythonHandler):
+    @web.authenticated
+    def get(self):
+        self.redirect(
+            ujoin(self.base_url, 'simplest/tree')
+        )
+
 def _jupyter_server_extension_paths():
     return [{
         'module': 'simplest_notebook',
@@ -62,6 +71,7 @@ def _jupyter_server_extension_paths():
 def load_jupyter_server_extension(nbapp):
     base_url = ujoin(nbapp.web_app.settings['base_url'], 'simplest')
     handlers = [
+        (base_url, RedirectHandler),
         (ujoin(base_url, r'(notebooks|tree)(.*)?'), PageHandler),
         (ujoin(base_url, r"build/(.*)"), FileFindHandler,
             {'path': os.path.join(HERE, 'build')})
