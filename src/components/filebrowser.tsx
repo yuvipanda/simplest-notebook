@@ -3,22 +3,21 @@
 
 import * as React from 'react';
 
+import { each } from '@phosphor/algorithm';
 import { CommandRegistry } from '@phosphor/commands';
 
 import { SplitPanel, Widget, Menu } from '@phosphor/widgets';
 
 import { FileBrowser } from '@jupyterlab/filebrowser';
 
-import { DocumentManager } from '@jupyterlab/docmanager';
-
-import { ServiceManager } from '@jupyterlab/services';
+import { ServiceManager, Contents } from '@jupyterlab/services';
 
 export interface IFileBrowserProps {
   id: string;
   className?: string;
   serviceManager: ServiceManager.IManager;
   fileBrowser: FileBrowser;
-  docManager: DocumentManager
+  openItem: (item: Contents.IModel) => void
 }
 
 interface INotebookState {
@@ -62,6 +61,9 @@ export class FileBrowserComponent extends React.Component<IFileBrowserProps, INo
       }
     });
 
+    // Attach the panel to the DOM.
+    Widget.attach(panel, document.getElementById(this.props.id));
+
     // Create a context menu.
     let menu = new Menu({ commands: this.commands });
     menu.addItem({ command: 'file-open' });
@@ -85,14 +87,13 @@ export class FileBrowserComponent extends React.Component<IFileBrowserProps, INo
       menu.open(x, y);
     });
 
-    // Attach the panel to the DOM.
-    Widget.attach(panel, document.getElementById(this.props.id));
 
     // Handle resize events.
     window.addEventListener('resize', () => {
       panel.update();
     });
   }
+
 
   addCommands() {
     let commands = this.commands;
@@ -101,7 +102,9 @@ export class FileBrowserComponent extends React.Component<IFileBrowserProps, INo
       icon: 'fa fa-folder-open-o',
       mnemonic: 0,
       execute: () => {
-        // Open things somehow?
+        each(this.props.fileBrowser.selectedItems(), item => {
+          this.props.openItem(item);
+        });
       }
     });
     commands.addCommand('file-rename', {
@@ -110,12 +113,6 @@ export class FileBrowserComponent extends React.Component<IFileBrowserProps, INo
       mnemonic: 0,
       execute: () => {
         return this.props.fileBrowser.rename();
-      }
-    });
-    commands.addCommand('file-save', {
-      execute: () => {
-        let context = this.props.docManager.contextForWidget(this.activeWidget);
-        return context.save();
       }
     });
     commands.addCommand('file-cut', {

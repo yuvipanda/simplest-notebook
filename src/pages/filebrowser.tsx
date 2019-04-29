@@ -7,7 +7,8 @@ import { Header } from '../components/header';
 
 import { DockPanel, Widget } from '@phosphor/widgets';
 
-import { ServiceManager } from '@jupyterlab/services';
+import { ServiceManager, Contents } from '@jupyterlab/services';
+import { PageConfig } from '@jupyterlab/coreutils';
 
 
 import { FileBrowser, FileBrowserModel } from '@jupyterlab/filebrowser';
@@ -51,9 +52,9 @@ export class FileBrowserPage extends React.Component<FileBrowserPageProps, FileB
 
     let opener = {
       open: (widget: Widget) => {
+        console.log(widget);
       }
-    };
-
+    }
     let docRegistry = new DocumentRegistry();
     this.docManager = new DocumentManager({
       registry: docRegistry,
@@ -79,6 +80,21 @@ export class FileBrowserPage extends React.Component<FileBrowserPageProps, FileB
     });
   }
 
+  openItem = (item: Contents.IModel) => {
+    const base_url = PageConfig.getBaseUrl();
+    let target_url = '';
+    // For notebooks, construct a simplest notebook URL
+    if (item.type == 'notebook') {
+      target_url = base_url + 'simplest/notebooks/' + item.path;
+      window.open(target_url, '_blank');
+    } else if (item.type == 'file') {
+      target_url = base_url + 'view/' + item.path;
+      window.open(target_url, '_blank');
+    } else if (item.type == 'directory') {
+      this.fileBrowser.model.cd(item.path);
+    }
+  }
+
   render() {
     // Put a / before and after path
     let displayPath = this.state.currentPath;
@@ -96,9 +112,10 @@ export class FileBrowserPage extends React.Component<FileBrowserPageProps, FileB
       <FileBrowserComponent
         key="browser"
         id="main-container"
-        docManager={this.docManager}
         fileBrowser={this.fileBrowser}
         serviceManager={this.props.serviceManager}
+        openItem={this.openItem}
+
       />
     ];
   }
