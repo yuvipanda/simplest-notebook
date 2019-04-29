@@ -17,5 +17,5 @@
     "jsx": "react",
     "types": []
   },
-  "include": ["*", "components/*"]
+  "include": ["*", "pages/*", "components/*"]
 }

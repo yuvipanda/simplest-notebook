@@ -21,10 +21,13 @@ import '../../styles/index.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+type KindType = "tree" | "notebook";
+
 function main(): void {
   let manager = new ServiceManager();
 
   manager.ready.then(() => {
+    let kind = PageConfig.getOption('kind') as KindType;
     let notebookPath = PageConfig.getOption('notebookPath');
     const rendermime = new RenderMimeRegistry({
       initialFactories: initialFactories,
@@ -36,9 +39,10 @@ function main(): void {
 
     ReactDOM.render(
       <App
-        notebookPath={notebookPath}
+        kind={kind}
+        path={notebookPath}
         serviceManager={manager}
-        rendermime={rendermime}
+        renderMime={rendermime}
       />,
       document.getElementById('everything-container')
     );

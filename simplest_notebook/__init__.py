@@ -20,12 +20,11 @@ from traitlets import Unicode
 
 HERE = os.path.dirname(__file__)
 
-class NotebookHandler(IPythonHandler):
+class PageHandler(IPythonHandler):
     """
     Serve a notebook file from the filesystem in the notebook interface
     """
-
-    def get(self, notebook_path):
+    def get(self, kind, notebook_path):
         """Get the main page for the application's interface."""
         page_title = os.path.basename(notebook_path).replace(".ipynb", "")
         # Options set here can be read with PageConfig.getOption
@@ -37,7 +36,8 @@ class NotebookHandler(IPythonHandler):
             'bundleUrl': ujoin(self.base_url, 'build/'),
             # FIXME: Don't use a CDN here
             'mathjaxUrl': "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
-            'mathjaxConfig': "TeX-AMS_CHTML-full,Safe"
+            'mathjaxConfig': "TeX-AMS_CHTML-full,Safe",
+            'kind': kind
         }
         return self.write(
             self.render_template(
@@ -61,7 +61,7 @@ def _jupyter_server_extension_paths():
 def load_jupyter_server_extension(nbapp):
     base_url = ujoin(nbapp.web_app.settings['base_url'], 'simplest')
     handlers = [
-        (ujoin(base_url, r'notebooks/(.*)?'), NotebookHandler),
+        (ujoin(base_url, r'notebooks/(.*)?'), PageHandler),
         (ujoin(base_url, r"build/(.*)"), FileFindHandler,
             {'path': os.path.join(HERE, 'build')})
     ]
