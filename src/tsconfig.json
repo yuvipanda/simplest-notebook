@@ -17,5 +17,5 @@
     "jsx": "react",
     "types": []
   },
-  "include": ["*", "pages/*", "components/*"]
+  "include": ["*", "filebrowser/*", "components/*", "notebook/*"]
 }

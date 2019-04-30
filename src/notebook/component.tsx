@@ -55,7 +55,7 @@ interface INotebookState {
 /**
  * Wraps a NotebookPanel with a dummy <div>
  */
-export class Notebook extends React.Component<INotebookProps, INotebookState> {
+export class NotebookComponent extends React.Component<INotebookProps, INotebookState> {
 
   constructor(props: INotebookProps) {
     super(props);

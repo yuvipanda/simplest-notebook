@@ -18,7 +18,7 @@ import { DocumentManager } from '@jupyterlab/docmanager';
 import { DocumentRegistry } from '@jupyterlab/docregistry';
 
 import * as React from 'react';
-import { FileBrowserComponent } from '../components/filebrowser';
+import { FileBrowserComponent } from './component';
 
 import '../../../styles/filebrowser.css';
 import { IChangedArgs } from '@jupyterlab/coreutils';

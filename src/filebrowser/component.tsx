@@ -20,15 +20,10 @@ export interface IFileBrowserProps {
   openItem: (item: Contents.IModel) => void
 }
 
-interface INotebookState {
-  // FIXME: Do I need to dispose of this?
-  containerElement: HTMLElement;
-}
-
 /**
  * Wraps a NotebookPanel with a dummy <div>
  */
-export class FileBrowserComponent extends React.Component<IFileBrowserProps, INotebookState> {
+export class FileBrowserComponent extends React.Component<IFileBrowserProps> {
   widgets: Widget[] = [];
   activeWidget: Widget;
   commands: CommandRegistry = new CommandRegistry();

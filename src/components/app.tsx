@@ -3,8 +3,8 @@
 
 import { ServiceManager } from '@jupyterlab/services';
 import { RenderMimeRegistry } from '@jupyterlab/rendermime';
-import { NotebookPage } from '../pages/notebook';
-import { FileBrowserPage } from '../pages/filebrowser';
+import { NotebookPage } from '../notebook/page';
+import { FileBrowserPage } from '../filebrowser/page';
 
 import * as React from 'react';
 

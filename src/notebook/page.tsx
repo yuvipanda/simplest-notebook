@@ -24,7 +24,7 @@ import { DocumentRegistry } from '@jupyterlab/docregistry';
 
 import { RenderMimeRegistry } from '@jupyterlab/rendermime';
 import { Header } from '../components/header';
-import { Notebook } from '../components/notebook';
+import { NotebookComponent } from './component';
 import { CompleterComponent } from '../components/completer';
 
 import * as React from 'react';
@@ -131,7 +131,7 @@ export class NotebookPage extends React.Component<NotebookPageProps> {
         key="header"
         title={notebookName}
       />,
-      <Notebook
+      <NotebookComponent
         key="notebook"
         id="main-container"
         commands={this.commands}
