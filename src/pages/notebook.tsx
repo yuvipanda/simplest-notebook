@@ -29,10 +29,6 @@ import { CompleterComponent } from '../components/completer';
 
 import * as React from 'react';
 
-interface NotebookPageState {
-  notebookPath: string;
-}
-
 interface NotebookPageProps {
   serviceManager: ServiceManager.IManager;
   notebookPath: string;
@@ -42,7 +38,7 @@ interface NotebookPageProps {
 /**
  * Notebook application component
  */
-export class NotebookPage extends React.Component<NotebookPageProps, NotebookPageState> {
+export class NotebookPage extends React.Component<NotebookPageProps> {
   commands: CommandRegistry;
   nbWidget: NotebookPanel;
   completer: Completer;
@@ -96,20 +92,8 @@ export class NotebookPage extends React.Component<NotebookPageProps, NotebookPag
 
     this.nbWidget = docManager.open(this.props.notebookPath) as NotebookPanel;
 
-    this.state = {
-      notebookPath: this.props.notebookPath
-    };
-
     this.addCommands();
-
-    this.nbWidget.model.stateChanged.connect(this.onNotebookStateChanged);
   }
-
-  onNotebookStateChanged = () => {
-    this.setState({
-      notebookPath: this.nbWidget.context.path
-    });
-  };
 
   addCommands = () => {
     let commands = this.commands;
@@ -137,7 +121,7 @@ export class NotebookPage extends React.Component<NotebookPageProps, NotebookPag
 
   render() {
     // FIXME: Better way of getting rid of extension?
-    const notebookName = PathExt.basename(this.state.notebookPath).replace(
+    const notebookName = PathExt.basename(this.props.notebookPath).replace(
       '.ipynb',
       ''
     );
@@ -152,7 +136,7 @@ export class NotebookPage extends React.Component<NotebookPageProps, NotebookPag
         id="main-container"
         commands={this.commands}
         notebookWidget={this.nbWidget}
-        notebookPath={this.state.notebookPath}
+        notebookPath={this.props.notebookPath}
         contentsManager={this.props.serviceManager.contents}
       />,
       <CompleterComponent
