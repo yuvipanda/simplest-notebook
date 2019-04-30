@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SplitPanel, Widget, CommandPalette } from '@phosphor/widgets';
+import { Widget, } from '@phosphor/widgets';
 import { NotebookPanel, NotebookActions } from '@jupyterlab/notebook';
 import { CmdIds } from '../commands';
 
@@ -56,31 +56,20 @@ interface INotebookState {
  * Wraps a NotebookPanel with a dummy <div>
  */
 export class Notebook extends React.Component<INotebookProps, INotebookState> {
-  palette: CommandPalette;
 
   constructor(props: INotebookProps) {
     super(props);
 
-    this.palette = new CommandPalette({ commands: this.props.commands });
     this.addCommands();
     this.addShortcuts();
   }
 
   componentDidMount() {
-    let panel = new SplitPanel();
-    panel.addClass('notebook-container');
-    panel.orientation = 'horizontal';
-    panel.spacing = 0;
-    SplitPanel.setStretch(this.palette, 0);
-    SplitPanel.setStretch(this.props.notebookWidget, 1);
-    panel.addWidget(this.palette);
-    panel.addWidget(this.props.notebookWidget);
-
-    Widget.attach(panel, document.getElementById(this.props.id));
+    Widget.attach(this.props.notebookWidget, document.getElementById(this.props.id));
 
     // Handle resize events.
     window.addEventListener('resize', () => {
-      panel.update();
+      this.props.notebookWidget.update();
     });
 
     this.setupToolbarItems();
@@ -138,7 +127,6 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
   addCommands = () => {
     const commands = this.props.commands;
     const nbWidget = this.props.notebookWidget;
-    const palette = this.palette;
 
     // Add commands.
     commands.addCommand(CmdIds.invokeNotebook, {
@@ -252,30 +240,6 @@ export class Notebook extends React.Component<INotebookProps, INotebookState> {
           });
       }
     });
-
-    let category = 'Notebook Operations';
-    [
-      CmdIds.interrupt,
-      CmdIds.restart,
-      CmdIds.editMode,
-      CmdIds.commandMode,
-      CmdIds.switchKernel
-    ].forEach(command => palette.addItem({ command, category }));
-
-    category = 'Notebook Cell Operations';
-    [
-      CmdIds.runAndAdvance,
-      CmdIds.split,
-      CmdIds.merge,
-      CmdIds.selectAbove,
-      CmdIds.selectBelow,
-      CmdIds.extendAbove,
-      CmdIds.extendBelow,
-      CmdIds.insertAbove,
-      CmdIds.insertBelow,
-      CmdIds.undo,
-      CmdIds.redo
-    ].forEach(command => palette.addItem({ command, category }));
   };
 
   addShortcuts = () => {

@@ -3,7 +3,7 @@
 
 import { CommandRegistry } from '@phosphor/commands';
 
-import { CommandPalette, Widget } from '@phosphor/widgets';
+import { Widget } from '@phosphor/widgets';
 
 import { ServiceManager } from '@jupyterlab/services';
 import { PathExt, PageConfig } from '@jupyterlab/coreutils';
@@ -44,7 +44,6 @@ interface NotebookPageProps {
  */
 export class NotebookPage extends React.Component<NotebookPageProps, NotebookPageState> {
   commands: CommandRegistry;
-  palette: CommandPalette;
   nbWidget: NotebookPanel;
   completer: Completer;
   completionHandler: CompletionHandler;
