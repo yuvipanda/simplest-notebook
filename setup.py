@@ -3,7 +3,6 @@ from distutils.command.build import build
 from distutils.command.sdist import sdist
 from distutils.command.bdist import bdist
 from setuptools.command.develop import develop
-from glob import glob
 import subprocess
 import os
 
