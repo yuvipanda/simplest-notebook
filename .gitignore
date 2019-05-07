@@ -46,3 +46,4 @@ lerna-debug.log
 yarn-error.log
 
 junit.xml
+node_modules/**
