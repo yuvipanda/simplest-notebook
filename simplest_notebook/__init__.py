@@ -18,6 +18,7 @@ from notebook.notebookapp import NotebookApp
 from notebook.utils import url_path_join as ujoin
 from traitlets import Unicode
 from tornado import web
+from urllib.parse import urlparse, urlunparse
 
 HERE = os.path.dirname(__file__)
 
@@ -63,6 +64,14 @@ class RedirectHandler(IPythonHandler):
             ujoin(self.base_url, 'simplest/tree')
         )
 
+class AddSlashHandler(IPythonHandler):
+    """Handler for adding trailing slash to URLs that need them"""
+
+    def get(self, *args):
+        src = urlparse(self.request.uri)
+        dest = src._replace(path=src.path + '/')
+        self.redirect(urlunparse(dest))
+
 def _jupyter_server_extension_paths():
     return [{
         'module': 'simplest_notebook',
@@ -73,6 +82,7 @@ def load_jupyter_server_extension(nbapp):
     base_url = ujoin(nbapp.web_app.settings['base_url'], 'simplest')
     handlers = [
         (base_url, RedirectHandler),
+        (ujoin(base_url, r'tree'), AddSlashHandler),
         (ujoin(base_url, r'(notebooks|tree)(.*)?'), PageHandler),
         (ujoin(base_url, r"build/(.*)"), FileFindHandler,
             {'path': os.path.join(HERE, 'build')})
