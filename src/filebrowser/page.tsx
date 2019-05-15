@@ -115,14 +115,14 @@ export class FileBrowserPage extends React.Component<FileBrowserPageProps, FileB
         title={displayPath}
         key="page-header"
       />,
-      <FileBrowserComponent
-        key="browser"
-        id="main-container"
-        fileBrowser={this.fileBrowser}
-        serviceManager={this.props.serviceManager}
-        openItem={this.openItem}
-
-      />
+      <main key="main">
+        <FileBrowserComponent
+          id="main-container"
+          fileBrowser={this.fileBrowser}
+          serviceManager={this.props.serviceManager}
+          openItem={this.openItem}
+        />
+      </main>
     ];
   }
 }

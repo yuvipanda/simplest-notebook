@@ -131,14 +131,15 @@ export class NotebookPage extends React.Component<NotebookPageProps> {
         title={notebookName}
         key="page-header"
       />,
-      <NotebookComponent
-        key="notebook"
-        id="main-container"
-        commands={this.commands}
-        notebookWidget={this.nbWidget}
-        notebookPath={this.props.notebookPath}
-        contentsManager={this.props.serviceManager.contents}
-      />,
+      <main key="main">
+        <NotebookComponent
+          id="main-container"
+          commands={this.commands}
+          notebookWidget={this.nbWidget}
+          notebookPath={this.props.notebookPath}
+          contentsManager={this.props.serviceManager.contents}
+        />
+      </main>,
       <CompleterComponent
         key="completer"
         commands={this.commands}
