@@ -112,8 +112,8 @@ export class FileBrowserPage extends React.Component<FileBrowserPageProps, FileB
     }
     return [
       <Header
-        key="header"
         title={displayPath}
+        key="page-header"
       />,
       <FileBrowserComponent
         key="browser"

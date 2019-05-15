@@ -128,8 +128,8 @@ export class NotebookPage extends React.Component<NotebookPageProps> {
 
     return [
       <Header
-        key="header"
         title={notebookName}
+        key="page-header"
       />,
       <NotebookComponent
         key="notebook"
