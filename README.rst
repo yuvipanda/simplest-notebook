@@ -1,3 +1,5 @@
+**Archived**: `RetroLab <https://github.com/jupyterlab/retrolab/>`_ is the successor to the simplest notebook.
+
 =====================
 The Simplest Notebook
 =====================
